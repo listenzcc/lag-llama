@@ -1,3 +1,24 @@
+# Lag-Llama
+
+My application for forecasting the Perlin noise using Lag-Llama.
+
+使用Lag-llama的大模型进行时间序列预测，它是基于Transformer结构的时间序列预测大模型，并且在colab上提供了开源代码和预训练参数。我尝试让它对perlin噪声数据进行zero-shot的预测，分析 思路和预测结果如下。
+
+- 首先，虽然perlin数据是噪声，但它仿佛具有一定规律，即它的octave参数控制着随机的振荡周期。我希望大模型能够抓住这种规律，根据蓝色部分将绿色部分预测出来。
+- 其次，perlin数据归根结底还是噪声，因此我并不指望模型能够准确预测出后续时间序列，仅仅是希望它预测出的数据像是这组数据的后续即可。
+- 另外，为了对比大模型的效果，我还使用了prophet包作为对比（下图中的橙黄色线）。
+
+下图是两个典型结果，首先左图展示了预测成功的效果，即绿色曲线与蓝色曲线贴合得很好；右图展示了预测失败的效果，即绿色曲线与蓝色曲线差距较大。但即使如此，绿色线与蓝色线在断点处仍然是连续的，并且保持了一定的振荡。而它没有与蓝色线贴近的原因可能是由于这组蓝色线中间有平缓的一段，这导致模型无法判断使用观测数据中的哪些部分进行预测。
+
+另外，prophet包预测结果几乎为水平直线，代表这类方法难以识别信号的振荡规律，反观大模型则找到了振荡的规律。因此，这是比较合理的结果。
+
+![](images/good-and-bad.png)
+[colab - LagLlama](https://colab.research.google.com/drive/1DRAzLUPxsd-0r8b-o4nlyFXrjw_ZajJJ?usp=sharing#scrollTo=vT93Ks5tSvzq)
+
+[time-series-foundation-models/Lag-Llama · Hugging Face](https://huggingface.co/time-series-foundation-models/Lag-Llama)
+
+---
+
 # Lag-Llama: Towards Foundation Models for Probabilistic Time Series Forecasting
 
 ![lag-llama-architecture](images/lagllama.webp)
